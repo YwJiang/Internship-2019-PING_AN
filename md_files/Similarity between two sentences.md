@@ -9,7 +9,7 @@ BM stands for best matching. It ranks a set of documents which are close to a qu
 $$
 score(D, Q) = \sum_{i=1}^nIDF(q_i)\frac{f(q_i, D)*(k_1+1)}{f(q_i, D)+k_1*(1-b+b*\frac{\left|D\right|} {avgdl})}
 $$
-where $ f(q_i, D) $  is $ q_i 's $ term frequency in the document D,  $\left|D\right|$ is the length of the document D in words, which is the total number of words in document, and avgdl is the average document length in the text collection. $IDF(q_i)$ is the IDF weight of the query term $q_i$, which is usually computed as:
+where $f(q_i, D) $  is $ q_i 's $ term frequency in the document D,  $\left|D\right|$ is the length of the document D in words, which is the total number of words in document, and avgdl is the average document length in the text collection. $IDF(q_i)$ is the IDF weight of the query term $q_i$, which is usually computed as:
 
 $$ IDF(q_i) = log\frac{N-n(q_i)+0.5}{n(q_i)+0.5}$$ 
 
