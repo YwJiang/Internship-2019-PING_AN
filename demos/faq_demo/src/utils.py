@@ -109,12 +109,52 @@ def faq_item_to_dict(faq_item, has_query=True):
     return res
 
 
+def answer_faq_item_to_dict(faq_item):
+    for name, value in vars(faq_item).items():
+        if name == "answer":
+            return value
+
+
+def suggestions_faq_item_to_dict(faq_item, has_query=True, has_question_vec=True):
+    res = {}
+    logger = logging.getLogger("utils.py--suggestions_faq_item_to_dict")
+    for name, value in vars(faq_item).items():
+        if name == "query_item":
+            if has_query:
+                value = query_item_to_dict(value)
+            else:
+                value = ''
+        if name == "question_vec":
+            if has_question_vec:
+                pass
+            else:
+                value = ''
+        if name in ['question', 'answer', 'score']:
+            res[name] = value
+
+    logger.debug('score'+str(res['score']))
+    return res
+
+
+
 def faq_items_to_list(faq_item_list):
     res = [{}] * len(faq_item_list)
     for i in range(len(faq_item_list)):
         res[i] = faq_item_to_dict(faq_item_list[i])
     return res
 
+
+def answer_suggestion_faq_items_to_list(faq_item_list, ans_sugg_len=4):
+    res = {}
+    res['answer'] = ''
+    res['suggestion'] = []
+    ans_n_sugg = min(len(faq_item_list), ans_sugg_len)
+    for i in range(ans_n_sugg):
+        if i == 0:
+            res['answer'] = answer_faq_item_to_dict(faq_item_list[i])
+        else:
+            res['suggestion'].append(suggestions_faq_item_to_dict(faq_item_list[i], has_query=False, has_question_vec=False))
+    return res
 
 if __name__ == '__main__':
 

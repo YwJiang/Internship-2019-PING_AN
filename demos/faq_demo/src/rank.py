@@ -45,7 +45,7 @@ def calc_score_with_abcnn(faq_item_list):
 
 
 # 默认按照score从大到小排序
-def sort_by_score(faq_item_list, top_n=5):
+def sort_by_score(faq_item_list, top_n=5, threshold=0.5):
     logger = logging.getLogger('rank')
     length = len(faq_item_list)
     score_list = [0.0] * length
@@ -62,13 +62,19 @@ def sort_by_score(faq_item_list, top_n=5):
     logger.info('rank SUCCESS !')
     if length > top_n:
         output_list = output_list[:top_n]
+    sifted_output_list = []
+    for question in output_list:
+        logger.debug('score_by_score'+str(question.question)+str(question.score))
+        if question.score > threshold:
+            sifted_output_list.append(question)
     return output_list
 
 
 def rank(input_list, faq_config: FaqConfig):
     output_list = calc_score(input_list)
     # output_list = calc_score_with_abcnn(input_list)
-    output_list = sort_by_score(output_list, top_n=faq_config.rank.top_n)
+    output_list = sort_by_score(output_list, top_n=faq_config.rank.top_n,
+                                threshold=faq_config.rank.threshold)
     return output_list
 
 

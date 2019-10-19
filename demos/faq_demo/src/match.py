@@ -42,9 +42,11 @@ def edit_similarity(v1, v2):
             temp = 0 if v1[i - 1] == v2[j - 1] else 1
             matrix[i, j] = min(matrix[i - 1, j] + 1,
                                matrix[i, j - 1] + 1, matrix[i - 1, j - 1] + temp)
+    result = 1 - matrix[len(v1), len(v2)] / (max(len(v1), len(v2)) + 1e-9)
 
+    logger.debug("edit_similarity()" + str(result))
     logger.info('edit_similarity calculate SUCCESS !')
-    return 1 - matrix[len(v1), len(v2)] / (max(len(v1), len(v2)) + 1e-9)
+    return result
 
 
 
@@ -94,6 +96,8 @@ def cal_jaccard_similarity(query_item, retrieval_result):
     v1 = query_item.query_tokens_zi
     for item in retrieval_result:
         question = item.question_tokens_zi
+        logger.debug('cal_jaccard_similarity: query tokens of query item'+str(v1))
+        logger.debug('cal_jaccard_similarity: item question_tokens in retrieval_result'+str(question))
         item.jaccard_similarity_score = jaccard_similarity(v1, question)
     logger.info('cal_jaccard_similarity finished SUCCESS !')
 
@@ -103,6 +107,8 @@ def cal_edit_similarity(query_item, retrieval_result):
     v1 = query_item.query_tokens_zi
     for item in retrieval_result:
         question = item.question_tokens_zi
+        logger.debug('cal_edit_similarity: query tokens of query item' + str(v1))
+        logger.debug('cal_edit_similarity: item question_tokens in retrieval_result' + str(question))
         item.edit_similarity_score = edit_similarity(v1, question)
     logger.info('cal_edit_similarity finished SUCCESS !')
 
@@ -112,6 +118,9 @@ def cal_bm25_similarity(query_item, retrieval_result):
     doc1 = query_item.query_tokens_zi
     candits = [item.question_tokens_zi for item in retrieval_result]
     scores = bm25_similarity(doc1, candits)
+    logger.debug('cal_bm25_similarity: query tokens of query item' + str(doc1))
+    logger.debug('cal_bm25_similarity: item question_tokens in retrieval_result' + str(candits))
+
     for i in range(len(retrieval_result)):
         retrieval_result[i].bm25_similarity_score = scores[i]
     logger.info('cal_bm25_similarity finished SUCCESS !')
@@ -127,7 +136,7 @@ def cal_abcnn_similarity(query_item: QueryItem, retrieval_result):
     for i in range(len(retrieval_result)):
         retrieval_result[i].abcnn_similarity = prd[i]
         # print(item.abcnn_similarity)
-
+        logger.debug("abcnn similarity"+str(prd[i]))
     logger.info('cal_abcnn_similarity finished SUCCESS !')
 
 def match(query_item: QueryItem, retrieval_result):
