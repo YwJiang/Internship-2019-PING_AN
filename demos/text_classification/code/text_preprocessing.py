@@ -8,7 +8,7 @@ import pickle as pkl
 from collections import OrderedDict
 import argparse
 import os
-
+from tensorflow import keras
 
 # remove the punctuations (both English and Chinese)
 def remove_punctuation(input_string):
@@ -99,4 +99,10 @@ def text_df_to_array_pad(df, text_colname="fact_reason", pad_len=None):
 
 if __name__ == "__main__":
     print(__name__)
-    path = "../data/"
+    path = "../data/credit_card_labels_factreason.xlsx"
+    pd_all = pd.read_excel(path)
+    df, dict_len, padding_len = text_df_to_array_pad(pd_all, 'fact_reason', pad_len=100)
+    df = pd.DataFrame(df)
+    print("df shape: ", df.shape)
+    print("dictionary: ", dict_len)
+    print("padding: ", padding_len)
