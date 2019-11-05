@@ -14,7 +14,7 @@ faq_demo consists of Analysis, Retrieval, Match and Rank parts:
 
 - **Analysis**: conduct data cleaning and text tokenization, generate sentence embedding vector via Skip-thought algorithm
 - **Retrieval:** retrieve similar questions via ElasticSearch retrieval and Annoy semantic retrieval
-- **Match:** compare the similarity  between similar questions and original question. BM25 similarity, edit distance, ABCNN and jaccard similarity algorithm are used to calculated the score. XGBoost is used to ..
+- **Match:** compare the similarity  between similar questions and original question. BM25 similarity, edit distance, ABCNN and jaccard similarity algorithm are used to calculated the score. XGBoost is used to calculate the final similarity score.
 - **Rank:** rerank the similar questions precisely and return top N similar questions and their answers in corpus, as recommended answers
 
 
